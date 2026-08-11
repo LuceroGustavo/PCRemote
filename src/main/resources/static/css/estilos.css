@@ -1,0 +1,19 @@
+body {
+    background: #f1f5f9;
+}
+
+.navbar {
+    background: #0f172a;
+}
+
+.equipo-card {
+    border: none;
+    border-radius: 14px;
+    box-shadow: 0 4px 14px rgba(15, 23, 42, .08);
+    transition: transform .12s ease, box-shadow .12s ease;
+}
+
+.equipo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 20px rgba(15, 23, 42, .14);
+}
