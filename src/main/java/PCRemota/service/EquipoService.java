@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class EquipoService {
@@ -62,10 +63,26 @@ public class EquipoService {
      */
     public List<Equipo> refrescarEstado() {
         List<Equipo> equipos = equipoRepository.findAll();
+        Map<String, Boolean> estado = redService.pingParalelo(
+                equipos.stream().map(Equipo::getIp).toList());
         for (Equipo e : equipos) {
-            e.setOnline(redService.ping(e.getIp()));
+            e.setOnline(estado.getOrDefault(e.getIp(), false));
         }
         return equipos;
+    }
+
+    /**
+     * Devuelve id -> online de todos los equipos, con pings en paralelo.
+     */
+    public Map<Long, Boolean> estadoTodos() {
+        List<Equipo> equipos = equipoRepository.findAll();
+        Map<String, Boolean> estado = redService.pingParalelo(
+                equipos.stream().map(Equipo::getIp).toList());
+        Map<Long, Boolean> resultado = new java.util.HashMap<>();
+        for (Equipo e : equipos) {
+            resultado.put(e.getId(), estado.getOrDefault(e.getIp(), false));
+        }
+        return resultado;
     }
 
     public String revelarPassword(Long id, String usuarioActual, AuditoriaService auditoriaService) {

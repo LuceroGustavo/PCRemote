@@ -18,6 +18,9 @@
     </div>
 
     <div th:if="${param.error}" class="alert alert-danger py-2">Usuario o contraseña incorrectos.</div>
+    <div th:if="${param.bloqueado}" class="alert alert-warning py-2">
+        Demasiados intentos fallidos. La IP quedó bloqueada por 15 minutos.
+    </div>
     <div th:if="${param.logout}" class="alert alert-secondary py-2">Sesión cerrada.</div>
 
     <form method="post" th:action="@{/login}">

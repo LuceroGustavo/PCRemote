@@ -5,8 +5,12 @@ equipos de la red (IP, usuario, contraseña cifrada, SO, notas) y permite desde 
 
 - **Conectar** por Escritorio Remoto (RDP nativo de Windows) con un clic y sin tipear credenciales.
 - **Abrir recursos compartidos** (ej. `\\IP\c$`) en el Explorador de Windows.
-- **Ver estado** online/offline de cada equipo (ping).
+- **Ver estado** online/offline de cada equipo (ping), con refresco en vivo sin recargar.
+- **Escanear la red** por rango de IPs e importar los equipos encontrados a la grilla.
+- **Ver auditoría** de accesos (RDP, compartidos, revelación de contraseñas, escaneos).
 - **Revelar contraseñas** de forma controlada y auditada.
+- **Bloqueo** por 15 minutos tras 5 intentos fallidos de login.
+- **Cambiar la contraseña** del usuario propio desde el panel.
 
 ---
 
@@ -86,8 +90,12 @@ Los equipos de ejemplo cargados se eliminan/editan desde el panel.
 | **Conectar** | Verifica puerto RDP → `cmdkey` guarda la credencial → genera `.rdp` temporal → lanza `mstsc.exe` |
 | **Archivos** | `net use P: \\IP\c$` con credenciales → abre `explorer.exe P:\` |
 | **Ver pass** | Confirma en pantalla → revela/copia contraseña → registra auditoría |
+| **Refrescar estado** | Repinga todos los equipos en paralelo y actualiza los badges vía AJAX |
+| **Escanear red** | Busca equipos en un rango (ej. `192.168.1.1-254`) y los importa a la grilla |
+| **Auditoría** | Lista los últimos 50 accesos/acciones registrados |
+| **Cuenta** | Cambia la contraseña del usuario actual |
 | Editar / Eliminar | CRUD completo |
-| Estado | `ping` ICMP de 3 s → badge EN LÍNEA / OFFLINE |
+| Estado | `ping` ICMP → badge EN LÍNEA / OFFLINE |
 
 ---
 

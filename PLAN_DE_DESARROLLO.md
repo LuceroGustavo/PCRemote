@@ -33,6 +33,11 @@ App web (Spring Boot) que permite al administrador de sistemas:
 | 10 | Seeder: usuario admin + equipos de ejemplo | ✅ Terminado |
 | 11 | Tests de contexto / arranque | ✅ Terminado |
 | 12 | Documentación (LEEME_PRIMERO.md + este plan) | ✅ Terminado |
+| 13 | Estado en vivo con AJAX (refresh de pings) | ✅ Terminado |
+| 14 | Escaneo de red por rango de IP + importación | ✅ Terminado |
+| 15 | Vista de auditoría en el panel | ✅ Terminado |
+| 16 | Cambio de contraseña del usuario | ✅ Terminado |
+| 17 | Bloqueo por intentos fallidos de login | ✅ Terminado |
 
 ---
 
@@ -48,7 +53,26 @@ App web (Spring Boot) que permite al administrador de sistemas:
 - ⚠️ **Sigue pendiente**: verificar manualmente la acción real de RDP y compartidos contra un
   equipo de la red (solo se probó el login y el render del dashboard).
 
-### Sesión 2 — (próxima)
+### Sesión 2 — 11/08/2026
+- **Estado en vivo**: botón "Refrescar estado" que repinga todos los equipos en paralelo
+  (`/api/equipos/estado`) y actualiza los badges sin recargar la página.
+- **Escaneo de red**: página `/escanear` que busca equipos en un rango de IPs
+  (formato `192.168.1.1-254`) en paralelo, muestra resultados y permite **importarlos** a la grilla.
+  Verificado contra la red local real (56 equipos detectados).
+- **Vista de auditoría**: página `/auditoria` con tabla de últimos 50 registros
+  (RDP, COMPARTIDO, VER_PASSWORD, ESCANEO, IMPORTAR).
+- **Cambio de contraseña**: página `/cuenta` para cambiar la propia contraseña
+  (pide la actual, valida confirmación y largo mínimo 4).
+- **Bloqueo por intentos fallidos**: 5 fallos → IP bloqueada 15 min (filtro + handler).
+  Verificado: el 6º intento redirige a `/login?bloqueado`.
+- **Bug corregido**: `form-equipo.html` usaba `*{...}` sin `th:object="${equipo}"`
+  (daba 500 en `/equipos/nuevo` y edición). Agregado.
+- Cifrado verificado: crear equipo con password → `/api/equipos/{id}/password` devuelve
+  el valor original (round-trip AES-GCM + HKDF OK).
+- ⚠️ **Pendiente**: probar RDP y compartidos contra un equipo real (requiere IP con
+  RDP habilitado y credenciales válidas).
+
+### Sesión 3 — (próxima)
 - Retomar desde "Pendientes / próximos pasos".
 
 ---
@@ -56,24 +80,23 @@ App web (Spring Boot) que permite al administrador de sistemas:
 ## Pendientes / próximos pasos
 
 ### 🚨 Críticos
-- [ ] **Cambiar la contraseña por defecto de `admin`** al primer uso.
+- [ ] **Cambiar la contraseña por defecto de `admin`** al primer uso (ya se puede hacer desde
+      `/cuenta`; falta forzar el cambio en el primer login).
 - [ ] Habilitar **HTTPS con certificado autogenerado** en el primer arranque (o usar proxy
       TLS). Actualmente va por HTTP.
-- [ ] Agregar **bloqueo por intentos fallidos** de login (Spring Security o filtro propio).
 
 ### 🔒 Mejoras de seguridad
-- [ ] Roles más finos: `ADMIN` (todo) y `OPERADOR` (conectar/compartidos sin ver passwords).
-- [ ] Vista de **auditoría** en el panel (tabla `auditoria`) + exportación CSV.
+- [ ] Roles más finos: `ADMIN` (todo) y `OPERADOR` (conectar/compartidos sin ver passwords) +
+      pantalla de gestión de usuarios.
+- [ ] Vista de auditoría: ya implementada; falta **exportación CSV** y filtros por fecha/acción.
 - [ ] Rotación/renovación de la clave maestra con recifrado de todas las credenciales.
 - [ ] Importar/exportar base de datos como respaldo (H2 script o backup).
 
 ### ⚙️ Funcionales
-- [ ] **Escaneo de red**: descubrir equipos por rango de IP (e.g. `192.168.1.1-254`) e
-      importarlos a la grilla.
-- [ ] Botón de **estado en vivo** (refresh de pings con AJAX sin recargar la página).
 - [ ] Soporte de **etiquetas/tags** y filtros/búsqueda por nombre, IP o ubicación.
 - [ ] Guardado de la **última sesión** y favoritos.
-- [ ] Verificar el funcionamiento real de RDP/compartidos con un equipo de prueba en la red.
+- [ ] Verificar el funcionamiento real de RDP/compartidos con un equipo de prueba en la red
+      (principal pendiente: falta un equipo real con RDP habilitado).
 
 ### 🧪 Opciones a futuro (evaluar con el usuario)
 - [ ] **Apache Guacamole**: control remoto 100% dentro del navegador (tipo AnyDesk).

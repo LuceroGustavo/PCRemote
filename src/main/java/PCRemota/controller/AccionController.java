@@ -54,6 +54,11 @@ public class AccionController {
         return ResponseEntity.ok(Map.of("online", String.valueOf(online)));
     }
 
+    @GetMapping("/estado")
+    public ResponseEntity<Map<Long, Boolean>> estado() {
+        return ResponseEntity.ok(equipoService.estadoTodos());
+    }
+
     @GetMapping("/{id}/password")
     public ResponseEntity<Map<String, String>> password(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetails user) {

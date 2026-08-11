@@ -19,7 +19,8 @@
 <div class="container py-4 col-lg-7">
     <h4 class="mb-4" th:text="${equipo.id == null} ? 'Nuevo equipo' : 'Editar equipo'"></h4>
 
-    <form th:action="${equipo.id == null} ? @{/equipos/guardar} : @{/equipos/{id}/actualizar(id=${equipo.id})}"
+    <form th:object="${equipo}"
+          th:action="${equipo.id == null} ? @{/equipos/guardar} : @{/equipos/{id}/actualizar(id=${equipo.id})}"
           method="post" class="card p-4">
 
         <div class="row g-3">

@@ -69,4 +69,31 @@ document.addEventListener('DOMContentLoaded', function () {
                 .catch(function () { mostrarToast('No se pudo obtener la contraseña', 'danger'); });
         });
     });
+
+    // Refrescar estado online/offline sin recargar
+    const btnRefrescar = document.getElementById('btnRefrescar');
+    if (btnRefrescar) {
+        btnRefrescar.addEventListener('click', function () {
+            const original = btnRefrescar.innerHTML;
+            btnRefrescar.disabled = true;
+            btnRefrescar.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Actualizando...';
+            fetch('/api/equipos/estado', { credentials: 'same-origin' })
+                .then(function (r) { return r.json(); })
+                .then(function (estados) {
+                    Object.keys(estados).forEach(function (id) {
+                        const badge = document.getElementById('estado-' + id);
+                        if (!badge) return;
+                        const online = estados[id] === true;
+                        badge.className = 'badge estado-badge ' + (online ? 'bg-success' : 'bg-danger');
+                        badge.textContent = online ? 'EN LÍNEA' : 'OFFLINE';
+                    });
+                    mostrarToast('Estado actualizado');
+                })
+                .catch(function () { mostrarToast('No se pudo actualizar el estado', 'danger'); })
+                .finally(function () {
+                    btnRefrescar.disabled = false;
+                    btnRefrescar.innerHTML = original;
+                });
+        });
+    }
 });
