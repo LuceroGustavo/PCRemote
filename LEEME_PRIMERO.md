@@ -7,6 +7,9 @@ equipos de la red (IP, usuario, contraseña cifrada, SO, notas) y permite desde 
 - **Abrir recursos compartidos** (ej. `\\IP\c$`) en el Explorador de Windows.
 - **Ver estado** online/offline de cada equipo (ping), con refresco en vivo sin recargar.
 - **Escanear la red** por rango de IPs e importar los equipos encontrados a la grilla.
+- **Importar credenciales de Windows** (Credential Manager): las guardadas por RDP con
+  "recordar credenciales", `cmdkey`, etc. aparecen en `/credenciales` y se importan a las tarjetas
+  con un clic (solo las de tipo "Genérica" exponen la contraseña).
 - **Ver auditoría** de accesos (RDP, compartidos, revelación de contraseñas, escaneos).
 - **Revelar contraseñas** de forma controlada y auditada.
 - **Bloqueo** por 15 minutos tras 5 intentos fallidos de login.
@@ -92,6 +95,7 @@ Los equipos de ejemplo cargados se eliminan/editan desde el panel.
 | **Ver pass** | Confirma en pantalla → revela/copia contraseña → registra auditoría |
 | **Refrescar estado** | Repinga todos los equipos en paralelo y actualiza los badges vía AJAX |
 | **Escanear red** | Busca equipos en un rango (ej. `192.168.1.1-254`) y los importa a la grilla |
+| **Credenciales** | Lista el Administrador de Credenciales de Windows; importa las legibles a la grilla |
 | **Auditoría** | Lista los últimos 50 accesos/acciones registrados |
 | **Cuenta** | Cambia la contraseña del usuario actual |
 | Editar / Eliminar | CRUD completo |

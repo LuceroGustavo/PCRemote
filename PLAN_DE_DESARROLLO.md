@@ -38,6 +38,7 @@ App web (Spring Boot) que permite al administrador de sistemas:
 | 15 | Vista de auditoría en el panel | ✅ Terminado |
 | 16 | Cambio de contraseña del usuario | ✅ Terminado |
 | 17 | Bloqueo por intentos fallidos de login | ✅ Terminado |
+| 18 | Importación de credenciales del Administrador de Credenciales de Windows | ✅ Terminado |
 
 ---
 
@@ -72,7 +73,20 @@ App web (Spring Boot) que permite al administrador de sistemas:
 - ⚠️ **Pendiente**: probar RDP y compartidos contra un equipo real (requiere IP con
   RDP habilitado y credenciales válidas).
 
-### Sesión 3 — (próxima)
+### Sesión 3 — 11/08/2026
+- **Importación de credenciales de Windows**: página `/credenciales` que enumera el
+  Administrador de Credenciales del usuario (vía `CredEnumerate`/`CredRead` con JNA).
+  Permite importar cada credencial como equipo nuevo o adjuntarla a uno existente.
+  - Solo las de tipo **Genérica** exponen la contraseña (DPAPI de la misma sesión); las de
+    **dominio** no (diseño del SO).
+  - Los targets crudos llevan prefijo `LegacyGeneric:target=` / `TERMSRV/`; se limpian para
+    mostrar/nombrar y se usa el crudo al releer con `CredReadW`.
+  - Verificado end-to-end con `cmdkey /generic`: la password real se importó, se cifró y se
+    reveló correctamente; auditoría registra `IMPORTAR_CREDENCIAL`.
+  - En la máquina real se detectaron credenciales legibles (ej. TERMSRV/10.17.252.32 y
+    10.78.12.246, tipo genérico).
+
+### Sesión 4 — (próxima)
 - Retomar desde "Pendientes / próximos pasos".
 
 ---
