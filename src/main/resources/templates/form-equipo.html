@@ -1,85 +1,87 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCRemota - Equipo</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="/css/estilos.css" rel="stylesheet">
-</head>
+<html lang="es" th:replace="~{layout :: app(~{::body})}">
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark px-3">
-    <a class="navbar-brand fw-bold" href="/">🖥️ PCRemota</a>
-    <div class="ms-auto">
-        <a href="/" class="btn btn-outline-light btn-sm">Volver</a>
-    </div>
-</nav>
 
-<div class="container py-4 col-lg-7">
-    <h4 class="mb-4" th:text="${equipo.id == null} ? 'Nuevo equipo' : 'Editar equipo'"></h4>
-
-    <form th:object="${equipo}"
-          th:action="${equipo.id == null} ? @{/equipos/guardar} : @{/equipos/{id}/actualizar(id=${equipo.id})}"
-          method="post" class="card p-4">
-
-        <div class="row g-3">
-            <div class="col-md-6">
-                <label class="form-label">Nombre *</label>
-                <input type="text" class="form-control" th:field="*{nombre}" required>
-                <div class="text-danger small" th:errors="*{nombre}"></div>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">IP *</label>
-                <input type="text" class="form-control" th:field="*{ip}" required placeholder="192.168.1.10">
-                <div class="text-danger small" th:errors="*{ip}"></div>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Puerto RDP</label>
-                <input type="number" class="form-control" th:field="*{puertoRdp}">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Sistema operativo</label>
-                <input type="text" class="form-control" th:field="*{so}" placeholder="Windows 11 Pro">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Usuario</label>
-                <input type="text" class="form-control" th:field="*{usuario}" placeholder="Administrator">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Contraseña <span class="text-muted small" th:text="${equipo.id != null} ? '(dejar vacío para no cambiar)' : ''"></span></label>
-                <input type="password" class="form-control" name="password" id="password">
-                <div class="form-check mt-1">
-                    <input class="form-check-input" type="checkbox" id="verPass">
-                    <label class="form-check-label small" for="verPass">Mostrar</label>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Ubicación</label>
-                <input type="text" class="form-control" th:field="*{ubicacion}" placeholder="Oficina / Sala">
-            </div>
-            <div class="col-md-6">
-                <label class="form-label">Recurso compartido</label>
-                <input type="text" class="form-control" th:field="*{recursoCompartido}" placeholder="c$ (disco C)">
-            </div>
-            <div class="col-12">
-                <label class="form-label">Notas</label>
-                <textarea class="form-control" rows="2" th:field="*{notas}"></textarea>
-            </div>
-        </div>
-
-        <div class="d-flex gap-2 mt-4">
-            <button type="submit" class="btn btn-primary">Guardar</button>
-            <a href="/" class="btn btn-outline-secondary">Cancelar</a>
-        </div>
-    </form>
+<div class="flex justify-between items-center mb-6">
+    <h2 class="font-headline-md text-headline-md text-[#f1f5f9]"
+        th:text="${equipo.id == null} ? 'Nuevo equipo' : 'Editar equipo'"></h2>
+    <a href="/" class="font-label-technical text-xs text-[#94a3b8] hover:text-cyan-300">← Volver</a>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<div th:if="${error}" th:text="${error}"
+     class="mb-3 p-2 bg-[#450a0a] border border-[#f43f5e]/40 text-[#fecaca] rounded font-label-technical text-xs"></div>
+
+<form th:object="${equipo}"
+      th:action="${equipo.id == null} ? @{/equipos/guardar} : @{/equipos/{id}/actualizar(id=${equipo.id})}"
+      method="post" class="bg-[#1e293b] border border-[#334155] rounded-DEFAULT p-card-padding">
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Nombre *</label>
+            <input type="text" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{nombre}" required>
+            <div class="text-[#fca5a5] font-label-technical text-[10px]" th:errors="*{nombre}"></div>
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">IP *</label>
+            <input type="text" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{ip}" required placeholder="192.168.1.10">
+            <div class="text-[#fca5a5] font-label-technical text-[10px]" th:errors="*{ip}"></div>
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Puerto RDP</label>
+            <input type="number" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{puertoRdp}">
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Sistema operativo</label>
+            <input type="text" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{so}" placeholder="Windows 11 Pro / Ubuntu 22.04">
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Usuario</label>
+            <input type="text" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{usuario}" placeholder="Administrator">
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Contraseña <span class="text-[#94a3b8]" th:text="${equipo.id != null} ? '(vacío para no cambiar)' : ''"></span></label>
+            <input type="password" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   name="password" id="password">
+            <div class="mt-1.5 flex items-center gap-2">
+                <input class="accent-cyan-500" type="checkbox" id="verPassCheckbox">
+                <label class="font-label-technical text-xs text-[#94a3b8]" for="verPassCheckbox">Mostrar contraseña</label>
+            </div>
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Ubicación</label>
+            <input type="text" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{ubicacion}" placeholder="Sala / Rack A4">
+        </div>
+        <div>
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Recurso compartido</label>
+            <input type="text" class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400"
+                   th:field="*{recursoCompartido}" placeholder="c$ (disco C)">
+        </div>
+        <div class="md:col-span-2">
+            <label class="block font-label-technical text-xs text-[#94a3b8] mb-1">Notas</label>
+            <textarea class="w-full bg-[#0b1326] border border-[#334155] rounded text-[#f1f5f9] px-3 py-2 focus:outline-none focus:border-cyan-400" rows="2"
+                      th:field="*{notas}"></textarea>
+        </div>
+    </div>
+
+    <div class="flex gap-3 mt-5">
+        <button type="submit" class="bg-cyan-500 hover:bg-cyan-400 text-[#0b1326] font-label-technical text-xs px-4 py-2 rounded shadow-sm">Guardar</button>
+        <a href="/" class="border border-[#334155] bg-[#0b1326]/60 text-[#cfd8dc] font-label-technical text-xs px-4 py-2 rounded hover:bg-[#2d3a4d]">Cancelar</a>
+    </div>
+</form>
+
 <script>
-    document.getElementById('verPass').addEventListener('change', function () {
-        document.getElementById('password').type = this.checked ? 'text' : 'password';
+    document.addEventListener('change', function (e) {
+        if (e.target && e.target.id === 'verPassCheckbox') {
+            document.getElementById('password').type = e.target.checked ? 'text' : 'password';
+        }
     });
 </script>
+
 </body>
 </html>

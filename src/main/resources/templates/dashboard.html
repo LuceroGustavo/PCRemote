@@ -1,135 +1,138 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PCRemota - Equipos</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
-    <link href="/css/estilos.css" rel="stylesheet">
-    <meta name="_csrf" th:content="${_csrf.token}"/>
-    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
-</head>
+<html lang="es" th:replace="~{layout :: app(~{::body})}">
 <body>
-<nav class="navbar navbar-expand-lg navbar-dark px-3">
-    <a class="navbar-brand fw-bold" href="/">🖥️ PCRemota</a>
-    <div class="ms-auto d-flex align-items-center gap-3">
-        <a href="/cuenta" class="text-white-50 small text-decoration-none" title="Cambiar contraseña">
-            <i class="bi bi-shield-lock"></i> <b th:text="${usuario}"></b>
+
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+    <h2 class="font-headline-md text-headline-md text-[#f1f5f9]">Equipos de la red</h2>
+    <div class="flex flex-wrap gap-2">
+        <button id="btnRefrescar" class="border border-[#334155] bg-[#1e293b] text-[#cfd8dc] px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center gap-2 hover:bg-[#2d3a4d] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">refresh</span> Refrescar
+        </button>
+        <a href="/escanear" class="bg-cyan-500 text-[#0b1326] px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center gap-2 hover:bg-cyan-400 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">radar</span> Escanear red
         </a>
-        <form th:action="@{/logout}" method="post" class="m-0">
-            <button class="btn btn-outline-light btn-sm">Salir</button>
-        </form>
-    </div>
-</nav>
-
-<div class="container py-4">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-        <h4 class="m-0">Equipos de la red</h4>
-        <div class="d-flex gap-2">
-            <button class="btn btn-outline-secondary" id="btnRefrescar">
-                <i class="bi bi-arrow-repeat"></i> Refrescar estado
-            </button>
-            <a href="/escanear" class="btn btn-info text-dark"><i class="bi bi-radar"></i> Escanear red</a>
-            <a href="/credenciales" class="btn btn-outline-dark"><i class="bi bi-key-fill"></i> Credenciales</a>
-            <a href="/auditoria" class="btn btn-outline-primary"><i class="bi bi-journal-text"></i> Auditoría</a>
-            <button class="btn btn-primary" id="btnConectarNuevo">
-                <i class="bi bi-plug"></i> Conectar equipo nuevo
-            </button>
-            <a href="/equipos/nuevo" class="btn btn-success">+ Nuevo equipo</a>
-        </div>
-    </div>
-
-    <div th:if="${mensaje}" class="alert alert-success py-2" th:text="${mensaje}"></div>
-
-    <div class="row row-cols-1 row-cols-md-2 row-cols-xl-3 g-4">
-        <div class="col" th:each="equipo : ${equipos}">
-            <div class="card h-100 equipo-card">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between align-items-start mb-2">
-                        <div>
-                            <h5 class="card-title mb-0" th:text="${equipo.nombre}">Equipo</h5>
-                            <small class="text-muted" th:text="${equipo.ip} + ':' + ${equipo.puertoRdp}">IP</small>
-                        </div>
-                        <span class="badge estado-badge" th:id="'estado-' + ${equipo.id}"
-                              th:classappend="${equipo.online} ? 'bg-success' : 'bg-danger'"
-                              th:text="${equipo.online} ? 'EN LÍNEA' : 'OFFLINE'">estado</span>
-                    </div>
-
-                    <hr class="my-2">
-
-                    <div class="small text-muted">
-                        <div th:if="${equipo.usuario}"><i class="bi bi-person"></i> <b>Usuario:</b> <span th:text="${equipo.usuario}"></span></div>
-                        <div th:if="${equipo.so}"><i class="bi bi-cpu"></i> <b>SO:</b> <span th:text="${equipo.so}"></span></div>
-                        <div th:if="${equipo.ubicacion}"><i class="bi bi-geo-alt"></i> <span th:text="${equipo.ubicacion}"></span></div>
-                        <div th:if="${equipo.notas}" class="text-truncate" th:title="${equipo.notas}"><i class="bi bi-sticky"></i> <span th:text="${equipo.notas}"></span></div>
-                        <div th:if="${equipo.ultimoAcceso}"><i class="bi bi-clock-history"></i> Último acceso: <span th:text="${#temporals.format(equipo.ultimoAcceso, 'dd/MM/yyyy HH:mm')}"></span></div>
-                    </div>
-
-                    <div class="d-flex flex-wrap gap-1 mt-3">
-                        <button class="btn btn-sm btn-primary accion" th:data-accion="@{/api/equipos/{id}/conectar(id=${equipo.id})}">
-                            <i class="bi bi-display"></i> Conectar
-                        </button>
-                        <button class="btn btn-sm btn-info text-dark accion" th:data-accion="@{/api/equipos/{id}/compartido(id=${equipo.id})}">
-                            <i class="bi bi-folder2-open"></i> Archivos
-                        </button>
-                        <button class="btn btn-sm btn-outline-secondary ver-pass" th:data-url="@{/api/equipos/{id}/password(id=${equipo.id})}"
-                                th:data-nombre="${equipo.nombre}">
-                            <i class="bi bi-key"></i> Ver pass
-                        </button>
-                        <a class="btn btn-sm btn-outline-warning" th:href="@{/equipos/{id}/editar(id=${equipo.id})}">
-                            <i class="bi bi-pencil"></i>
-                        </a>
-                        <form th:action="@{/equipos/{id}/eliminar(id=${equipo.id})}" method="post" class="m-0"
-                              onsubmit="return confirm('¿Eliminar ' + '${equipo.nombre}' + '?')">
-                            <button class="btn btn-sm btn-outline-danger"><i class="bi bi-trash"></i></button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div th:if="${#lists.isEmpty(equipos)}" class="text-center text-muted py-5">
-        <p class="mb-1">No hay equipos cargados.</p>
-        <a href="/equipos/nuevo" class="btn btn-sm btn-success">Agregar el primero</a>
+        <a href="/credenciales" class="border border-[#334155] bg-[#1e293b] text-[#cfd8dc] px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center gap-2 hover:bg-[#2d3a4d] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">key</span> Credenciales
+        </a>
+        <a href="/auditoria" class="border border-[#334155] bg-[#1e293b] text-[#cfd8dc] px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center gap-2 hover:bg-[#2d3a4d] transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">security</span> Auditoría
+        </a>
+        <button id="btnConectarNuevo" class="border border-cyan-500 bg-cyan-500/10 text-cyan-300 px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center gap-2 hover:bg-cyan-500/20 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">cast</span> Conectar equipo nuevo
+        </button>
+        <a href="/equipos/nuevo" class="bg-cyan-500 text-[#0b1326] px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center gap-2 hover:bg-cyan-400 transition-colors shadow-sm">
+            <span class="material-symbols-outlined text-[16px]">add</span> Nuevo equipo
+        </a>
     </div>
 </div>
 
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="card" th:each="equipo : ${equipos}"
+         th:with="esServer=(${#strings.contains(equipo.so, 'Server')} or ${#strings.contains(equipo.so, 'server')})">
+        <div th:classappend="${esServer} ? 'bg-server border-l-4 border-l-cyan-400' : 'bg-ws'"
+             class="equipo-card-shell border border-[#334155] rounded-DEFAULT p-card-padding flex flex-col gap-4 relative overflow-hidden shadow-sm">
+
+            <div class="flex justify-between items-start">
+                <div class="flex items-center gap-3">
+                    <span class="material-symbols-outlined"
+                          th:classappend="${esServer} ? 'text-cyan-400 text-[24px]' : 'text-[#94a3b8] text-[24px]'"
+                          th:text="${esServer} ? 'dns' : 'desktop_window'"></span>
+                    <div>
+                        <h3 class="equipo-title font-headline-md text-body-base text-[#f1f5f9]" th:text="${equipo.nombre}">Equipo</h3>
+                        <p class="equipo-meta font-label-technical text-label-technical text-[#94a3b8]"
+                           th:text="${equipo.ip} + ':' + ${equipo.puertoRdp}">IP</p>
+                    </div>
+                </div>
+                <span class="badge-status font-label-technical text-[10px] px-2 py-0.5 rounded-DEFAULT"
+                      th:classappend="${equipo.online} ? 'border border-emerald-500 bg-emerald-900/40 text-emerald-400 shadow-led' : 'offline-badge border border-[#f43f5e]/50 bg-[#1e293b] text-[#f43f5e]'"
+                      th:id="'estado-' + ${equipo.id}"
+                      th:text="${equipo.online} ? 'EN LÍNEA' : 'OFFLINE'">estado</span>
+            </div>
+
+            <div class="equipo-separator grid grid-cols-2 gap-y-2 gap-x-4 border-t border-[#334155] pt-4">
+                <div class="flex flex-col" th:if="${equipo.usuario}">
+                    <span class="equipo-label font-label-technical text-label-technical text-[#94a3b8]">USUARIO:</span>
+                    <span class="equipo-value font-body-sm text-body-sm text-[#cbd5e1]" th:text="${equipo.usuario}"></span>
+                </div>
+                <div class="flex flex-col" th:if="${equipo.so}">
+                    <span class="equipo-label font-label-technical text-label-technical text-[#94a3b8]">SO:</span>
+                    <span class="equipo-value font-body-sm text-body-sm text-[#cbd5e1]" th:text="${equipo.so}"></span>
+                </div>
+                <div class="flex flex-col col-span-2" th:if="${equipo.ubicacion}">
+                    <span class="equipo-label font-label-technical text-label-technical text-[#94a3b8]">UBICACIÓN:</span>
+                    <span class="equipo-value font-body-sm text-body-sm text-[#cbd5e1]" th:text="${equipo.ubicacion}"></span>
+                </div>
+            </div>
+
+            <div class="flex flex-wrap gap-2 mt-auto pt-3">
+                <button class="accion bg-cyan-500 text-[#0b1326] px-3 py-1.5 rounded-DEFAULT font-label-technical text-xs flex items-center justify-center gap-2 flex-1 hover:bg-cyan-400 transition-colors shadow-sm"
+                        th:data-accion="@{/api/equipos/{id}/conectar(id=${equipo.id})}">
+                    <span class="material-symbols-outlined text-[16px]">cast</span> Conectar
+                </button>
+                <button class="accion equipo-action-secondary bg-[#1e293b] text-[#cbd5e1] border border-[#334155] px-2 py-1.5 rounded-DEFAULT hover:bg-[#2d3a4d] transition-colors shadow-sm"
+                        th:title="'Archivos'" th:data-accion="@{/api/equipos/{id}/compartido(id=${equipo.id})}">
+                    <span class="material-symbols-outlined text-[16px]">folder_open</span>
+                </button>
+                <button class="ver-pass equipo-action-secondary border border-[#334155] bg-[#1e293b] text-[#cbd5e1] px-2 py-1.5 rounded-DEFAULT hover:bg-[#2d3a4d] transition-colors shadow-sm"
+                        th:title="'Ver contraseña'" th:data-url="@{/api/equipos/{id}/password(id=${equipo.id})}"
+                        th:data-nombre="${equipo.nombre}">
+                    <span class="material-symbols-outlined text-[16px]">key</span>
+                </button>
+                <a th:href="@{/equipos/{id}/editar(id=${equipo.id})}"
+                   class="equipo-action-secondary border border-[#334155] bg-[#1e293b] text-[#cbd5e1] px-2 py-1.5 rounded-DEFAULT hover:bg-[#2d3a4d] transition-colors shadow-sm" th:title="'Editar'">
+                    <span class="material-symbols-outlined text-[16px]">edit</span>
+                </a>
+                <form th:action="@{/equipos/{id}/eliminar(id=${equipo.id})}" method="post" class="m-0">
+                    <button type="submit" class="btn-eliminar equipo-action-secondary border border-[#334155] bg-[#1e293b] text-[#f43f5e] px-2 py-1.5 rounded-DEFAULT hover:bg-[#2d3a4d] transition-colors shadow-sm"
+                            th:data-nombre="${equipo.nombre}" title="Eliminar">
+                        <span class="material-symbols-outlined text-[16px]">delete</span>
+                    </button>
+                </form>
+            </div>
+
+            <span class="equipo-type-badge absolute top-2 right-2 font-label-technical text-[10px] px-1.5 rounded"
+                  th:classappend="${esServer} ? 'text-cyan-400 bg-cyan-900/30' : 'text-[#94a3b8] bg-[#0f172a]/60'"
+                  th:text="${equipo.tipo}"></span>
+        </div>
+    </div>
+</div>
+
+<div th:if="${#lists.isEmpty(equipos)}" class="text-center text-[#94a3b8] py-10">
+    <p class="mb-2">No hay equipos cargados.</p>
+    <a href="/equipos/nuevo" class="text-cyan-400 font-label-technical">Agregar el primero</a>
+</div>
+
+<!-- Modal: Conectar equipo nuevo -->
 <div class="modal fade" id="modalConectarNuevo" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title"><i class="bi bi-plug"></i> Conectar equipo nuevo</h5>
+        <div class="modal-content bg-[#1e293b] text-[#f1f5f9] border border-[#334155]">
+            <div class="modal-header border-[#334155]">
+                <h5 class="modal-title">Conectar equipo nuevo</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
             </div>
             <div class="modal-body">
-                <p class="text-muted small mb-3">
+                <p class="font-body-sm text-sm text-[#94a3b8] mb-3">
                     Ingresá la IP. Si el equipo responde, se lanza el Escritorio Remoto y la tarjeta
-                    queda registrada automáticamente. Si no responde, no se crea.
+                    queda registrada automáticamente.
                 </p>
                 <div class="mb-3">
-                    <label class="form-label">Dirección IP</label>
-                    <input type="text" id="nuevaIp" class="form-control" placeholder="192.168.1.10" autocomplete="off">
+                    <label class="font-label-technical text-xs text-[#94a3b8]">Dirección IP</label>
+                    <input type="text" id="nuevaIp" class="form-control bg-[#0b1326] border-[#334155] text-[#f1f5f9]" placeholder="192.168.1.10">
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Puerto RDP</label>
-                    <input type="number" id="nuevaIpPuerto" class="form-control" value="3389">
+                    <label class="font-label-technical text-xs text-[#94a3b8]">Puerto RDP</label>
+                    <input type="number" id="nuevaIpPuerto" class="form-control bg-[#0b1326] border-[#334155] text-[#f1f5f9]" value="3389">
                 </div>
             </div>
-            <div class="modal-footer">
+            <div class="modal-footer border-[#334155]">
                 <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
-                <button type="button" class="btn btn-primary" id="btnConectarNuevoConfirmar">
-                    <i class="bi bi-display"></i> Conectar
+                <button type="button" class="btn btn-cyan text-[#0b1326]" id="btnConectarNuevoConfirmar">
+                    Conectar
                 </button>
             </div>
         </div>
     </div>
 </div>
 
-<div class="toast-container position-fixed bottom-0 end-0 p-3" id="toastContainer"></div>
-
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="/js/app.js"></script>
 </body>
 </html>

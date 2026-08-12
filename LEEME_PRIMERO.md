@@ -85,6 +85,20 @@ contraseña: admin
 La base de datos y la clave maestra se crean en `data/` la primera vez que arranca.
 Los equipos de ejemplo cargados se eliminan/editan desde el panel.
 
+### Workflow de desarrollo (DevTools)
+
+La app ya incluye `spring-boot-devtools`; **el reinicio es automático**:
+
+- Si ya la tenés corriendo en una terminal del VS Code (`spring-boot:run`), dejá esa instancia
+  activa. Cada vez que guardás un cambio, **devTools la reinicia sola** (mirá la terminal).
+- Si no está corriendo:
+  ```bash
+  ./mvnw spring-boot:run
+  ```
+- Regla de oro: **antes de lanzar, fijate si el puerto 8443 ya escucha**. Si lo está, usá la
+  instancia existente (no inicies una segunda, que se pisa el puerto). Para forzar un
+  reinicio rápido tras un cambio, guardá el archivo y esperá unos segundos, o hacé `mvn compile`.
+
 ---
 
 ## Características por tarjeta

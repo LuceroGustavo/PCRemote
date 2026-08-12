@@ -2,6 +2,7 @@ package PCRemota.controller;
 
 import PCRemota.model.Equipo;
 import PCRemota.service.*;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -30,7 +31,7 @@ public class AccionController {
         this.redService = redService;
     }
 
-    @PostMapping("/conectar-nuevo")
+    @PostMapping(value = "/conectar-nuevo", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> conectarNuevo(@RequestParam String ip,
                                                              @RequestParam(defaultValue = "3389") int puerto,
                                                              @AuthenticationPrincipal UserDetails user) {
@@ -76,7 +77,7 @@ public class AccionController {
         return ResponseEntity.badRequest().body(Map.of("mensaje", resultado.substring(6).trim()));
     }
 
-    @PostMapping("/{id}/conectar")
+    @PostMapping(value = "/{id}/conectar", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> conectar(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetails user) {
         Equipo equipo = equipoService.obtener(id);
@@ -84,7 +85,7 @@ public class AccionController {
         return respuesta(resultado);
     }
 
-    @PostMapping("/{id}/compartido")
+    @PostMapping(value = "/{id}/compartido", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> compartido(@PathVariable Long id,
                                                           @RequestParam(required = false) String recurso,
                                                           @AuthenticationPrincipal UserDetails user) {
@@ -93,19 +94,19 @@ public class AccionController {
         return respuesta(resultado);
     }
 
-    @GetMapping("/{id}/ping")
+    @GetMapping(value = "/{id}/ping", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> ping(@PathVariable Long id) {
         Equipo equipo = equipoService.obtener(id);
         boolean online = redService.ping(equipo.getIp());
         return ResponseEntity.ok(Map.of("online", String.valueOf(online)));
     }
 
-    @GetMapping("/estado")
+    @GetMapping(value = "/estado", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<Long, Boolean>> estado() {
         return ResponseEntity.ok(equipoService.estadoTodos());
     }
 
-    @GetMapping("/{id}/password")
+    @GetMapping(value = "/{id}/password", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Map<String, String>> password(@PathVariable Long id,
                                                         @AuthenticationPrincipal UserDetails user) {
         String pass = equipoService.revelarPassword(id, user.getUsername(), auditoriaService);

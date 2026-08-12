@@ -78,4 +78,15 @@ public class Equipo {
 
     public boolean isOnline() { return online; }
     public void setOnline(boolean online) { this.online = online; }
+
+    /** Tipo derivado del SO: "SERVER" o "WORKSTATION". */
+    @jakarta.persistence.Transient
+    public String getTipo() {
+        if (so != null && (so.toLowerCase().contains("server") || so.toLowerCase().contains("ubuntu")
+                || so.toLowerCase().contains("linux") || so.toLowerCase().contains("rhel")
+                || so.toLowerCase().contains("core"))) {
+            return "SERVER";
+        }
+        return "WORKSTATION";
+    }
 }

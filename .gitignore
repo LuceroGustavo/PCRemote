@@ -35,3 +35,6 @@ build/
 ### PCRemota - datos sensibles ###
 /data/
 *.log
+
+### Herramientas de build (binarios grandes) ###
+/tools/

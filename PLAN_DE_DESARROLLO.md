@@ -96,7 +96,29 @@ App web (Spring Boot) que permite al administrador de sistemas:
   - Verificado: IP inválida → 400, IP muerta → 400, RDP abierto (127.0.0.1) → tarjeta creada,
     luego limpiada. Sin duplicados.
 
-### Sesión 5 — (próxima)
+### Sesión 5 — 12/08/2026
+- **Migración del frontend al diseño "Nexus Terminal"** (Tailwind CDN + tema oscuro) siguiendo
+  `Documentacion/referencia/DESIGN.md`. Nuevo `layout.html` con barra lateral, header y toasts.
+- Templates migrados: login, dashboard, form-equipo (ya estaban), y se completó la migración de
+  **escanear, cuenta, credenciales y auditoría** (todas usan el layout nuevo). Tablas en credenciales
+  y auditoría con estilo dark, badges por tipo de acción.
+- **Bug crítico corregido**: el layout definía el fragmento en un `<th:block>` interno, por lo que
+  las páginas renderizaban **sin `<head>`** (sin Tailwind, sin meta CSRF). Se movió
+  `th:fragment="app(content)"` a la etiqueta `<html>`.
+- **Bug corregido**: `dashboard.html` usaba `${_csrf.token()}` que en Spring Security 7 falla
+  (`SupplierCsrfToken`); eliminado el input manual (Thymeleaf inyecta CSRF con `th:action`).
+- **Bug corregido**: `th:onclick` con string en el botón de eliminar (no permitido por Thymeleaf);
+  reemplazado por `data-nombre` + confirmación vía `app.js`.
+- **Bug corregido**: `form-equipo.html` tenía `class` duplicado en el div de error; el toggle
+  "Mostrar contraseña" se movió dentro del formulario.
+- `app.js` actualizado al nuevo tema: toasts custom, badges de estado con clases Tailwind y
+  spinners con Material Symbols (`animate-spin`).
+- Endpoints JSON (`/api/equipos/**`) ahora declaran `produces=application/json` (evita 500/406 con
+  `Accept: text/html`).
+- Verificado end-to-end (login + 6 páginas 200 con layout, API `/estado` y `/password` OK).
+  Tests: 1/1 OK. Compila.
+
+### Sesión 6 — (próxima)
 - Retomar desde "Pendientes / próximos pasos".
 
 ---

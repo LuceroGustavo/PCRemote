@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+
+<html lang="es"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>PCRemota - Equipos</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&amp;family=JetBrains+Mono:wght@500&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "borderRadius": {
+                        "DEFAULT": "0.125rem",
+                        "lg": "0.25rem",
+                        "xl": "0.5rem",
+                        "full": "0.75rem"
+                    },
+                    "spacing": {
+                        "gutter": "24px",
+                        "base": "4px",
+                        "margin-mobile": "16px",
+                        "card-padding": "20px",
+                        "margin-desktop": "32px"
+                    },
+                    "fontFamily": {
+                        "body-sm": ["Inter"],
+                        "label-technical": ["JetBrains Mono"],
+                        "body-base": ["Inter"],
+                        "headline-md": ["Inter"],
+                        "display-lg": ["Inter"]
+                    },
+                    "fontSize": {
+                        "body-sm": ["14px", { "lineHeight": "1.5", "fontWeight": "400" }],
+                        "label-technical": ["12px", { "lineHeight": "1", "letterSpacing": "0.05em", "fontWeight": "500" }],
+                        "body-base": ["16px", { "lineHeight": "1.6", "fontWeight": "400" }],
+                        "headline-md": ["20px", { "lineHeight": "1.4", "fontWeight": "600" }],
+                        "display-lg": ["32px", { "lineHeight": "1.2", "letterSpacing": "-0.02em", "fontWeight": "700" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { font-family: 'Inter', sans-serif; }
+    </style>
+</head>
+<body class="bg-gray-100 text-gray-900 flex h-screen overflow-hidden">
+<!-- SideNavBar -->
+<nav class="bg-gray-50 border-r border-gray-200 flex flex-col h-screen py-gutter w-64 flex-shrink-0 transition-all duration-200 ease-in-out hidden md:flex">
+<div class="px-6 mb-8">
+<h2 class="font-headline-md text-headline-md text-cyan-700">System Admin</h2>
+<p class="font-body-sm text-body-sm text-gray-500">Network Ops Center</p>
+</div>
+<div class="px-4 mb-4">
+<button class="w-full bg-cyan-600 text-white flex items-center justify-center gap-2 py-2 rounded-DEFAULT font-label-technical transition-colors hover:opacity-90 shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                New Connection
+            </button>
+</div>
+<div class="flex-1 overflow-y-auto px-4 flex flex-col gap-1">
+<a class="bg-cyan-50 text-cyan-700 border-l-4 border-cyan-600 flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-cyan-100 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                Dashboard
+            </a>
+<a class="text-gray-600 border-l-4 border-transparent flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-gray-200 hover:text-gray-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dns</span>
+                Servers
+            </a>
+<a class="text-gray-600 border-l-4 border-transparent flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-gray-200 hover:text-gray-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">desktop_windows</span>
+                Workstations
+            </a>
+<a class="text-gray-600 border-l-4 border-transparent flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-gray-200 hover:text-gray-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">radar</span>
+                Network Scan
+            </a>
+<a class="text-gray-600 border-l-4 border-transparent flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-gray-200 hover:text-gray-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">security</span>
+                Audit Logs
+            </a>
+</div>
+<div class="px-4 mt-auto pt-4 border-t border-gray-200 flex flex-col gap-1">
+<a class="text-gray-600 border-l-4 border-transparent flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-gray-200 hover:text-gray-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">help_center</span>
+                Support
+            </a>
+<a class="text-gray-600 border-l-4 border-transparent flex items-center gap-3 px-3 py-2 rounded-r-DEFAULT font-body-sm text-body-sm hover:bg-gray-200 hover:text-gray-900 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                Sign Out
+            </a>
+</div>
+</nav>
+<!-- Main Content Area -->
+<div class="flex-1 flex flex-col min-w-0">
+<!-- TopAppBar -->
+<header class="bg-white border-b border-gray-200 flex justify-between items-center px-gutter h-16 w-full flex-shrink-0 shadow-sm">
+<div class="flex items-center gap-4">
+<h1 class="font-display-lg text-display-lg text-cyan-700 tracking-tight">🖥️ PCRemota</h1>
+</div>
+<div class="flex items-center gap-4">
+<button class="text-gray-500 hover:text-gray-900 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">monitor_heart</span>
+</button>
+<button class="text-gray-500 hover:text-gray-900 transition-colors cursor-pointer active:opacity-80">
+<span class="material-symbols-outlined">settings</span>
+</button>
+<div class="flex items-center gap-2 pl-4 border-l border-gray-200">
+<span class="material-symbols-outlined text-gray-500">account_circle</span>
+<span class="font-body-sm text-body-sm text-gray-900">admin</span>
+</div>
+</div>
+</header>
+<!-- Canvas -->
+<main class="flex-1 overflow-y-auto p-margin-mobile md:p-margin-desktop bg-gray-100">
+<!-- Page Header & Actions -->
+<div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 mb-8">
+<h2 class="font-headline-md text-headline-md text-gray-900">Equipos de la red</h2>
+<div class="flex flex-wrap gap-2">
+<button class="border border-gray-300 bg-white text-gray-700 px-3 py-1.5 rounded-DEFAULT font-body-sm text-body-sm flex items-center gap-2 hover:bg-gray-50 transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">refresh</span>
+                        Refrescar
+                    </button>
+<button class="bg-cyan-600 text-white px-3 py-1.5 rounded-DEFAULT font-body-sm text-body-sm flex items-center gap-2 hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined text-[16px]">radar</span>
+                        Escanear Red
+                    </button>
+<button class="bg-emerald-500 text-white px-3 py-1.5 rounded-DEFAULT font-body-sm text-body-sm flex items-center gap-2 hover:opacity-90 transition-opacity shadow-sm">
+<span class="material-symbols-outlined text-[16px]">add</span>
+                        Nuevo equipo
+                    </button>
+</div>
+</div>
+<!-- Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+<!-- Server Card 1 -->
+<div class="bg-slate-50 border border-slate-200 border-l-4 border-l-cyan-600 rounded-lg p-card-padding flex flex-col gap-4 relative overflow-hidden shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-600 text-[24px]">dns</span>
+<div>
+<h3 class="font-headline-md text-body-base text-gray-900">SRV-MAIN-01</h3>
+<p class="font-label-technical text-label-technical text-gray-500">10.0.0.5:3389</p>
+</div>
+</div>
+<span class="border border-emerald-500 bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-DEFAULT font-label-technical text-[10px]">EN LÍNEA</span>
+</div>
+<div class="grid grid-cols-2 gap-y-2 gap-x-4 border-t border-gray-200 pt-4">
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-gray-500">USUARIO:</span>
+<span class="font-body-sm text-body-sm text-gray-800">root_admin</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-gray-500">SO:</span>
+<span class="font-body-sm text-body-sm text-gray-800">Ubuntu 22.04</span>
+</div>
+<div class="flex flex-col col-span-2">
+<span class="font-label-technical text-label-technical text-gray-500">UBICACIÓN:</span>
+<span class="font-body-sm text-body-sm text-gray-800">Rack A4 - Data Center 1</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-auto pt-4">
+<button class="bg-cyan-600 text-white px-3 py-1.5 rounded-DEFAULT font-body-sm text-body-sm flex items-center gap-2 hover:bg-cyan-700 flex-1 justify-center transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+                            Conectar
+                        </button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Archivos">
+<span class="material-symbols-outlined text-[16px]">folder_open</span>
+</button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Ver Pass">
+<span class="material-symbols-outlined text-[16px]">key</span>
+</button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Editar">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+<span class="absolute top-2 right-2 font-label-technical text-[10px] text-cyan-700 bg-cyan-100 px-1 rounded">SERVER</span>
+</div>
+<!-- Server Card 2 -->
+<div class="bg-slate-50 border border-slate-200 border-l-4 border-l-cyan-600 rounded-lg p-card-padding flex flex-col gap-4 relative overflow-hidden shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-cyan-600 text-[24px]">dns</span>
+<div>
+<h3 class="font-headline-md text-body-base text-gray-900">DB-PROD-02</h3>
+<p class="font-label-technical text-label-technical text-gray-500">10.0.0.10:5432</p>
+</div>
+</div>
+<span class="border border-rose-500 bg-rose-50 text-rose-600 px-2 py-0.5 rounded-DEFAULT font-label-technical text-[10px]">OFFLINE</span>
+</div>
+<div class="grid grid-cols-2 gap-y-2 gap-x-4 border-t border-gray-200 pt-4">
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-gray-500">USUARIO:</span>
+<span class="font-body-sm text-body-sm text-gray-800">db_admin</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-gray-500">SO:</span>
+<span class="font-body-sm text-body-sm text-gray-800">RHEL 8</span>
+</div>
+<div class="flex flex-col col-span-2">
+<span class="font-label-technical text-label-technical text-gray-500">UBICACIÓN:</span>
+<span class="font-body-sm text-body-sm text-gray-800">Rack B2 - Data Center 1</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-auto pt-4">
+<button class="bg-cyan-600 text-white px-3 py-1.5 rounded-DEFAULT font-body-sm text-body-sm flex items-center gap-2 flex-1 justify-center opacity-50 cursor-not-allowed shadow-sm">
+<span class="material-symbols-outlined text-[16px]">terminal</span>
+                            Conectar
+                        </button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Archivos">
+<span class="material-symbols-outlined text-[16px]">folder_open</span>
+</button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Ver Pass">
+<span class="material-symbols-outlined text-[16px]">key</span>
+</button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Editar">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+<span class="absolute top-2 right-2 font-label-technical text-[10px] text-cyan-700 bg-cyan-100 px-1 rounded">SERVER</span>
+</div>
+<!-- Workstation Card 1 -->
+<div class="bg-white border border-gray-200 rounded-lg p-card-padding flex flex-col gap-4 relative shadow-sm">
+<div class="flex justify-between items-start">
+<div class="flex items-center gap-3">
+<span class="material-symbols-outlined text-gray-500 text-[24px]">desktop_windows</span>
+<div>
+<h3 class="font-headline-md text-body-base text-gray-900">WS-DEV-44</h3>
+<p class="font-label-technical text-label-technical text-gray-500">192.168.1.15:3389</p>
+</div>
+</div>
+<span class="border border-emerald-500 bg-emerald-50 text-emerald-600 px-2 py-0.5 rounded-DEFAULT font-label-technical text-[10px]">EN LÍNEA</span>
+</div>
+<div class="grid grid-cols-2 gap-y-2 gap-x-4 border-t border-gray-200 pt-4">
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-gray-500">USUARIO:</span>
+<span class="font-body-sm text-body-sm text-gray-800">jdoe</span>
+</div>
+<div class="flex flex-col">
+<span class="font-label-technical text-label-technical text-gray-500">SO:</span>
+<span class="font-body-sm text-body-sm text-gray-800">Windows 11</span>
+</div>
+<div class="flex flex-col col-span-2">
+<span class="font-label-technical text-label-technical text-gray-500">UBICACIÓN:</span>
+<span class="font-body-sm text-body-sm text-gray-800">Oficina 3A - Piso 2</span>
+</div>
+</div>
+<div class="flex flex-wrap gap-2 mt-auto pt-4">
+<button class="bg-cyan-600 text-white px-3 py-1.5 rounded-DEFAULT font-body-sm text-body-sm flex items-center gap-2 hover:bg-cyan-700 flex-1 justify-center transition-colors shadow-sm">
+<span class="material-symbols-outlined text-[16px]">desktop_windows</span>
+                            Conectar
+                        </button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Archivos">
+<span class="material-symbols-outlined text-[16px]">folder_open</span>
+</button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Ver Pass">
+<span class="material-symbols-outlined text-[16px]">key</span>
+</button>
+<button class="border border-gray-300 bg-white text-gray-700 px-2 py-1.5 rounded-DEFAULT hover:bg-gray-50 transition-colors shadow-sm" title="Editar">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+</div>
+</div>
+</div>
+</main>
+</div>
+</body></html>
