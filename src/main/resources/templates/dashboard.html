@@ -33,6 +33,9 @@
             <a href="/escanear" class="btn btn-info text-dark"><i class="bi bi-radar"></i> Escanear red</a>
             <a href="/credenciales" class="btn btn-outline-dark"><i class="bi bi-key-fill"></i> Credenciales</a>
             <a href="/auditoria" class="btn btn-outline-primary"><i class="bi bi-journal-text"></i> Auditoría</a>
+            <button class="btn btn-primary" id="btnConectarNuevo">
+                <i class="bi bi-plug"></i> Conectar equipo nuevo
+            </button>
             <a href="/equipos/nuevo" class="btn btn-success">+ Nuevo equipo</a>
         </div>
     </div>
@@ -90,6 +93,37 @@
     <div th:if="${#lists.isEmpty(equipos)}" class="text-center text-muted py-5">
         <p class="mb-1">No hay equipos cargados.</p>
         <a href="/equipos/nuevo" class="btn btn-sm btn-success">Agregar el primero</a>
+    </div>
+</div>
+
+<div class="modal fade" id="modalConectarNuevo" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"><i class="bi bi-plug"></i> Conectar equipo nuevo</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted small mb-3">
+                    Ingresá la IP. Si el equipo responde, se lanza el Escritorio Remoto y la tarjeta
+                    queda registrada automáticamente. Si no responde, no se crea.
+                </p>
+                <div class="mb-3">
+                    <label class="form-label">Dirección IP</label>
+                    <input type="text" id="nuevaIp" class="form-control" placeholder="192.168.1.10" autocomplete="off">
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Puerto RDP</label>
+                    <input type="number" id="nuevaIpPuerto" class="form-control" value="3389">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary" id="btnConectarNuevoConfirmar">
+                    <i class="bi bi-display"></i> Conectar
+                </button>
+            </div>
+        </div>
     </div>
 </div>
 

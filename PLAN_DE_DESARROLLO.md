@@ -86,7 +86,17 @@ App web (Spring Boot) que permite al administrador de sistemas:
   - En la máquina real se detectaron credenciales legibles (ej. TERMSRV/10.17.252.32 y
     10.78.12.246, tipo genérico).
 
-### Sesión 4 — (próxima)
+### Sesión 4 — 12/08/2026
+- **"Conectar equipo nuevo"**: botón + modal que pide solo la IP (y puerto opcional).
+  - Si el equipo responde en el puerto RDP → lanza mstsc y **crea la tarjeta automáticamente**
+    (`ALTA_AUTOMATICA` en auditoría).
+  - Si no responde → error y no se crea nada.
+  - Si la IP ya existe → conecta a la tarjeta existente (sin duplicar); si no tiene
+    credenciales guardadas, lanza RDP igual (mstsc pide el login).
+  - Verificado: IP inválida → 400, IP muerta → 400, RDP abierto (127.0.0.1) → tarjeta creada,
+    luego limpiada. Sin duplicados.
+
+### Sesión 5 — (próxima)
 - Retomar desde "Pendientes / próximos pasos".
 
 ---

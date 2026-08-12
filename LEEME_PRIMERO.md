@@ -12,6 +12,7 @@ equipos de la red (IP, usuario, contraseña cifrada, SO, notas) y permite desde 
   con un clic (solo las de tipo "Genérica" exponen la contraseña).
 - **Ver auditoría** de accesos (RDP, compartidos, revelación de contraseñas, escaneos).
 - **Revelar contraseñas** de forma controlada y auditada.
+- **Conectar equipo nuevo solo con la IP**: si responde, abre el RDP y la tarjeta se crea sola.
 - **Bloqueo** por 15 minutos tras 5 intentos fallidos de login.
 - **Cambiar la contraseña** del usuario propio desde el panel.
 

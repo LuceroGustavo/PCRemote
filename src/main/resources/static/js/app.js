@@ -96,4 +96,55 @@ document.addEventListener('DOMContentLoaded', function () {
                 });
         });
     }
+
+    // Conectar equipo nuevo (solo IP) -> si responde, crea la tarjeta sola
+    const btnConectarNuevo = document.getElementById('btnConectarNuevo');
+    const modalConectar = document.getElementById('modalConectarNuevo');
+    const btnConfirmar = document.getElementById('btnConectarNuevoConfirmar');
+    const inputIp = document.getElementById('nuevaIp');
+    const inputPuerto = document.getElementById('nuevaIpPuerto');
+
+    if (btnConectarNuevo && modalConectar) {
+        btnConectarNuevo.addEventListener('click', function () {
+            inputIp.value = '';
+            inputPuerto.value = '3389';
+            new bootstrap.Modal(modalConectar).show();
+            setTimeout(function () { inputIp.focus(); }, 400);
+        });
+    }
+
+    if (btnConfirmar) {
+        btnConfirmar.addEventListener('click', function () {
+            const ip = inputIp.value.trim();
+            if (!ip) {
+                mostrarToast('Ingresá una dirección IP', 'danger');
+                return;
+            }
+            const puerto = inputPuerto.value || '3389';
+            const original = btnConfirmar.innerHTML;
+            btnConfirmar.disabled = true;
+            btnConfirmar.innerHTML = '<span class="spinner-border spinner-border-sm"></span> Conectando...';
+            post('/api/equipos/conectar-nuevo', 'ip=' + encodeURIComponent(ip) + '&puerto=' + encodeURIComponent(puerto))
+                .then(function (r) {
+                    return r.json().then(function (data) { return { ok: r.ok, data: data }; });
+                })
+                .then(function (res) {
+                    mostrarToast(res.data.mensaje, res.ok ? 'success' : 'danger');
+                    if (res.ok && res.data.creado === 'true') {
+                        setTimeout(function () { window.location.reload(); }, 1200);
+                    }
+                    if (bootstrap.Modal.getInstance(modalConectar)) {
+                        bootstrap.Modal.getInstance(modalConectar).hide();
+                    }
+                })
+                .catch(function () { mostrarToast('Error de comunicación con el servidor', 'danger'); })
+                .finally(function () {
+                    btnConfirmar.disabled = false;
+                    btnConfirmar.innerHTML = original;
+                });
+        });
+        inputIp.addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') btnConfirmar.click();
+        });
+    }
 });
